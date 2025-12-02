@@ -13,7 +13,9 @@ Metrics folder unzipped + python venv. Shouldn't be pushed through Git, hence th
 # test command for 1000 files
 python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-files
 
- 
+# important note about Open AI api key
+Make sure to set the Open AI key using Powershell or Terminal locally before running the main command
+
 ## Overseer CLI Commands
 
 This project exposes a single CLI entrypoint implemented in `overseer/cli.py`. The CLI loads metric CSVs from a folder, runs a set of checks, optionally uses an LLM to explain detected anomalies, and writes an HTML report. Run it from the project root with `python -m overseer.cli`.
