@@ -73,3 +73,30 @@ Each option is described below with details and usage notes.
 Run a quick sample without LLM explanations and skip files that fail parsing:
 ```powershell
 python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-files --no-llm
+
+## **Overseer CLI — More Examples & Notes**
+
+- Explain ALL detected anomalies (no limit):
+```powershell
+python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-files --max-anomalies -1
+```
+
+- Explain a large bounded number of anomalies (safer than unlimited):
+```powershell
+python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-files --max-anomalies 10000
+```
+
+- Check multiple metrics (repeat `--metric`) and explain up to `--max-anomalies` per metric:
+```powershell
+python -m overseer.cli --metrics ./Metrics/metrics --metric total_count --metric id_count --max-anomalies 500
+```
+
+- Explain all anomalies for two metrics:
+```powershell
+python -m overseer.cli --metrics ./Metrics/metrics --metric total_count --metric id_count --max-anomalies -1
+```
+
+Notes & safety considerations:
+- Calling the LLM for many anomalies can be slow, expensive, and may hit API rate limits. Use `--sample`, `--max-files`, or a finite `--max-anomalies` to limit cost during development.
+- If you don't have an API key or want a deterministic run, use `--no-llm` to skip explanations.
+- For large runs consider grouping anomalies or sampling representative items rather than explaining every single anomaly; this is much cheaper and faster.
