@@ -18,6 +18,22 @@ def explain_anomaly(metric_name, change, context):
 
     prompt = f"The metric '{metric_name}' changed by {change:.2%}. Context: {context}. Explain why this might happen."
 
+    def _clean_explanation(text: str) -> str:
+        """Normalize whitespace and ensure the string ends with terminal punctuation.
+
+        This helps prevent truncated/incomplete sentences appearing in reports.
+        """
+        if not text:
+            return "LLM returned an empty explanation."
+        # Normalize whitespace
+        s = " ".join(str(text).split())
+        # If the text ends with an opening parenthesis or similar, close it gracefully
+        s = s.strip()
+        # Ensure sentence ends with proper punctuation
+        if s and s[-1] not in ".!?":
+            s = s + "."
+        return s
+
     # Use a module-level memoized backend detection to avoid noisy repeated
     # tracebacks when many anomalies are processed.
     global _llm_backend, _llm_client, _llm_init_error
@@ -67,9 +83,9 @@ def explain_anomaly(metric_name, change, context):
             if hasattr(resp, "choices") and resp.choices:
                 choice = resp.choices[0]
                 if hasattr(choice, "message") and getattr(choice.message, "content", None):
-                    return choice.message.content
+                    return _clean_explanation(choice.message.content)
                 if hasattr(choice, "text"):
-                    return choice.text
+                    return _clean_explanation(choice.text)
             return "LLM explanation returned an unexpected response shape."
         except Exception as e:
             # if client fails on first use, record error and fall back to requests
@@ -107,7 +123,7 @@ def explain_anomaly(metric_name, change, context):
 
         data = r.json()
         try:
-            return data["choices"][0]["message"]["content"]
+            return _clean_explanation(data["choices"][0]["message"]["content"])
         except Exception:
             return "LLM explanation returned an unexpected REST response shape."
 
