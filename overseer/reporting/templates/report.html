@@ -1,0 +1,12 @@
+<html>
+  <head><title>Overseer Validation Report</title></head>
+  <body>
+    <h1>Overseer Validation Report</h1>
+    {% for item in results %}
+      <div>
+        <strong>Metric:</strong> {{ item.metric }}<br>
+        <strong>AI Explanation:</strong> {{ item.comment }}
+      </div>
+    {% endfor %}
+  </body>
+</html>
