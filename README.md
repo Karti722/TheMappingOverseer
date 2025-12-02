@@ -13,8 +13,14 @@ Metrics folder unzipped + python venv. Shouldn't be pushed through Git, hence th
 # test command for 1000 files
 python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-files
 
-# important note about Open AI api key
-Make sure to set the Open AI key using Powershell or Terminal locally before running the main command
+# Open AI api key must be used for the explanations
+Make sure to set the Open AI key using Powershell or Terminal locally before running the main command.
+
+## command to set API key
+$env:OPENAI_API_KEY = 'sk-...'
+
+## Run this command to verify API key is in Powershell
+$env:OPENAI_API_KEY  
 
 ## Overseer CLI Commands
 
