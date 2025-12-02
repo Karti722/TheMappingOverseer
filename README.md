@@ -16,6 +16,8 @@ python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-fi
 # Open AI api key must be used for the explanations
 Make sure to set the Open AI key using Powershell or Terminal locally before running the main command.
 
+$env:OPENAI_API_KEY = 'sk-...'
+
 ## command to set API key
 $env:OPENAI_API_KEY = 'sk-...'
 
@@ -73,6 +75,7 @@ Each option is described below with details and usage notes.
 Run a quick sample without LLM explanations and skip files that fail parsing:
 ```powershell
 python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-files --no-llm
+```
 
 ## **Overseer CLI — More Examples & Notes**
 
@@ -86,7 +89,7 @@ python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-fi
 python -m overseer.cli --metrics ./Metrics/metrics --sample 100000 --skip-bad-files --max-anomalies 10000
 ```
 
-- Check multiple metrics (repeat `--metric`) and explain up to `--max-anomalies` per metric:
+- Check multiple metrics (repeat `--metric`) and explain up to `--max-anomalies` (global quota across all metrics):
 ```powershell
 python -m overseer.cli --metrics ./Metrics/metrics --metric total_count --metric id_count --max-anomalies 500
 ```

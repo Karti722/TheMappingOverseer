@@ -3,9 +3,18 @@
   <body>
     <h1>Overseer Validation Report</h1>
     {% for item in results %}
-      <div>
+      <div style="margin-bottom:12px;padding:8px;border:1px solid #ccc;">
         <strong>Metric:</strong> {{ item.metric }}<br>
-        <strong>AI Explanation:</strong> {{ item.comment }}
+        <strong>AI Explanation:</strong> {{ item.comment }}<br>
+        {% if item.row %}
+          <details><summary>Row details</summary>
+            <ul>
+              {% for k, v in item.row.items() %}
+                <li><strong>{{ k }}:</strong> {{ v }}</li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
       </div>
     {% endfor %}
   </body>
